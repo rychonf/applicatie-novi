@@ -22,17 +22,20 @@ public class DJ {
     @Id
     @GeneratedValue
     private Long id;
-    private String name;
+
+    @Column(unique = true)
+    private String djName;
+
     private String musicSpecialty;
     private double pricePerHour;
-    private char typeOfSubscription;
+
 
     @ManyToOne
     @JoinColumn(name = "fk_rating_id")
     private Rating rating;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_mixtape_id")
+    @JoinColumn(name = "mixtape_id", referencedColumnName = "id")
     private Mixtape mixtape;
 
 

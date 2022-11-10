@@ -2,7 +2,9 @@ package com.example.turnitup.Service;
 
 import com.example.turnitup.DTO.RatingDto;
 import com.example.turnitup.Exception.RecordNotFoundException;
+import com.example.turnitup.Model.DJ;
 import com.example.turnitup.Model.Rating;
+import com.example.turnitup.Repository.DJRepository;
 import com.example.turnitup.Repository.RatingRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.Optional;
 public class RatingService {
 
     RatingRepository ratingRepository;
+    DJRepository djRepository;
 
     public RatingService(RatingRepository ratingRepository) {
         this.ratingRepository = ratingRepository;
@@ -39,12 +42,51 @@ public class RatingService {
         }
     }
 
-    public RatingDto createRating(RatingDto ratingDto){
+    public RatingDto createRating(RatingDto ratingDto, String djName){
         Rating rating = toRating(ratingDto);
 
         Rating newRating = ratingRepository.save(rating);
         RatingDto dto = fromRating(newRating);
-        return dto;
+
+        if(djRepository.findByDjName(djName).isPresent()) {
+            DJ dj = djRepository.findByDjName(djName).get();
+
+            dj.setRating(rating);
+            djRepository.save(dj);
+            return dto;
+        } else throw new RecordNotFoundException("This DJ does not exist");
+    }
+
+    public boolean deleteRatingById(Long id){
+        if(ratingIdCheck(id)){
+            ratingRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public RatingDto updateRating(Long id, RatingDto ratingDto){
+        if(ratingRepository.findById(id).isPresent()){
+            Rating rating = ratingRepository.findById(id).get();
+
+            Rating updateRating = toRating(ratingDto);
+
+            rating.setRating(updateRating.getRating());
+
+            ratingRepository.save(rating);
+            return fromRating(rating);
+        } else {
+            throw new RecordNotFoundException("This rating does not exist");
+        }
+    }
+
+    public boolean ratingIdCheck (Long id){
+        if (ratingRepository.findById(id).isPresent()){
+            return true;
+        } else {
+            throw new RecordNotFoundException("Rating id is not found");
+        }
     }
 
     private RatingDto fromRating(Rating rating){

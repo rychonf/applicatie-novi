@@ -51,11 +51,9 @@ public class OrganisationService {
             Organisation organisation = organisationRepository.findById(id).get();
 
             Organisation updateOrganisation = toOrganisationFromDto(organisationDto);
-            updateOrganisation.setId(organisation.getId());
 
             organisation.setName(updateOrganisation.getName());
             organisation.setOrganizedEvents(updateOrganisation.getOrganizedEvents());
-            organisation.setTypeOfSubscription(updateOrganisation.getTypeOfSubscription());
 
             organisationRepository.save(organisation);
             return fromOrganisationToDto(organisation);
@@ -92,7 +90,6 @@ public class OrganisationService {
         dto.setId(organisation.getId());
         dto.setName(organisation.getName());
         dto.setOrganizedEvents(organisation.getOrganizedEvents());
-//        dto.setTypeOfSubscription(organisation.getTypeOfSubscription());
         return dto;
     }
 
@@ -102,7 +99,6 @@ public class OrganisationService {
         organisation.setId(dto.getId());
         organisation.setName(dto.getName());
         organisation.setOrganizedEvents(dto.getOrganizedEvents());
-//        organisation.setTypeOfSubscription(dto.getTypeOfSubscription());
         return organisation;
     }
 }

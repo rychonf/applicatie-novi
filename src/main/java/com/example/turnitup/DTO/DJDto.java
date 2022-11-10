@@ -15,10 +15,8 @@ public class DJDto {
     @NotNull
     private long id;
 
-    private String name;
+    private String djName;
     private String musicSpecialty;
     private double pricePerHour;
-
-//    private char typeOfSubscription;
 
 }

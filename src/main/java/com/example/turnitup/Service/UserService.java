@@ -57,6 +57,7 @@ public class UserService {
         if (!userRepository.existsById(username)) throw new RecordNotFoundException("This user does not exist");
         User user = userRepository.findById(username).get();
         user.setPassword(newUser.getPassword());
+        user.setTypeOfSubscription(newUser.getTypeOfSubscription());
         userRepository.save(user);
     }
 
@@ -91,6 +92,7 @@ public class UserService {
         dto.setPassword(user.getPassword());
         dto.setEnabled(user.isEnabled());
         dto.setEmail(user.getEmail());
+        dto.setTypeOfSubscription(user.getTypeOfSubscription());
         dto.setAuthorities(user.getAuthorities());
 
         return dto;
@@ -103,6 +105,7 @@ public class UserService {
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
         user.setEnabled(userDto.getEnabled());
+        user.setTypeOfSubscription(userDto.getTypeOfSubscription());
         user.setEmail(userDto.getEmail());
 
         return user;

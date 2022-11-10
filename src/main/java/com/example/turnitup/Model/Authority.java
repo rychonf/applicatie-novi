@@ -32,7 +32,4 @@ public class Authority implements GrantedAuthority {
         this.authority = authority;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "user_username")
-    private User user;
 }

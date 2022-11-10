@@ -2,11 +2,15 @@ package com.example.turnitup.Service;
 
 import com.example.turnitup.Exception.RecordNotFoundException;
 import com.example.turnitup.FileUploadResponse.UploadResponse;
+import com.example.turnitup.Model.DJ;
 import com.example.turnitup.Model.Mixtape;
+import com.example.turnitup.Repository.DJRepository;
 import com.example.turnitup.Repository.DocumentFileRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
@@ -27,6 +31,9 @@ import java.util.zip.ZipOutputStream;
 public class DatabaseService {
     private final DocumentFileRepository doc;
 
+    @Autowired
+    private DJRepository djRepository;
+
 
     public DatabaseService(DocumentFileRepository doc){
         this.doc = doc;
@@ -36,7 +43,7 @@ public class DatabaseService {
         return doc.findAll();
     }
 
-    public Mixtape uploadFileDocument(MultipartFile file) throws IOException {
+    public Mixtape uploadFileDocument(MultipartFile file, Long djId) throws IOException {
         String name = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         Mixtape mixtape = new Mixtape();
         mixtape.setFileName(name);
@@ -45,60 +52,27 @@ public class DatabaseService {
         LocalDate dateUploaded = LocalDate.now();
         mixtape.setDateUploaded(dateUploaded);
 
-
-
-//          Dit is voor de put mapping!
-//        FileDocument addTimesPlayed = timesMixtapePlayed(fileDocument.getId(id));
         mixtape.setTimesPlayed(mixtape.getTimesPlayed());
-
 
         doc.save(mixtape);
 
-        return mixtape;
+        if (djRepository.findById(djId).isPresent()) {
+            DJ dj = djRepository.findById(djId).get();
+
+            dj.setMixtape(mixtape);
+            djRepository.save(dj);
+            return mixtape;
+
+        } else throw new RecordNotFoundException("DJ does not exist");
+
     }
 
     public ResponseEntity<byte[]> singleFileDownload(String fileName, HttpServletRequest request){
 
         Mixtape document = doc.findByFileName(fileName);
 
-//        this mediaType decides witch type you accept if you only accept 1 type
-//        MediaType contentType = MediaType.IMAGE_JPEG;
-//        this is going to accept multiple types
-
-//        String mimeType = request.getServletContext().getMimeType(document.getFileName());
-
-//        for download attachment use next line
-//        return ResponseEntity.ok().contentType(contentType).header(HttpHeaders.CONTENT_DISPOSITION, "attachment;fileName=" + resource.getFilename()).body(resource);
-//        for showing image in browser
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName=" + document.getFileName()).body(document.getDocFile());
 
-    }
-
-    public List<UploadResponse> createMultipleUpload(MultipartFile[] files){
-        List<UploadResponse> uploadResponseList = new ArrayList<>();
-        Arrays.stream(files).forEach(file -> {
-
-            String name = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-            Mixtape mixtape = new Mixtape();
-            mixtape.setFileName(name);
-            try {
-                mixtape.setDocFile(file.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            doc.save(mixtape);
-
-//            next line makes url. example "http://localhost:8080/download/naam.jpg"
-            String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFromDB/").path(name).toUriString();
-
-            String contentType = file.getContentType();
-
-            UploadResponse response = new UploadResponse(name, contentType, url);
-
-            uploadResponseList.add(response);
-        });
-        return uploadResponseList;
     }
 
     public void getZipDownload(String[] files, HttpServletResponse response) throws IOException {
@@ -155,7 +129,6 @@ public class DatabaseService {
     }
 
 //    This method mimics a play button from a mixtape, everytime it is called it adds +1 to the times played count.
-
    public Mixtape playMixtape(Long id){
         if(doc.findById(id).isPresent()){
             Mixtape mixtape = doc.findById(id).get();

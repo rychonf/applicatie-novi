@@ -11,43 +11,58 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BookAnDJService {
+public class MessageService {
 
     MessageRepository messageRepository;
 
-    public BookAnDJService(MessageRepository messageRepository) {
+    public MessageService(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
     }
 
-    public List<MessageDto> getAllBookings(){
+    public List<MessageDto> getAllMessages(){
         List<Message> bookingList = messageRepository.findAll();
         List<MessageDto> bookingDtoList = new ArrayList<>();
         for (Message message : bookingList){
-            bookingDtoList.add(fromBooking(message));
+            bookingDtoList.add(fromMessageToDto(message));
         }
         return bookingDtoList;
     }
 
-    public MessageDto getBookingById(Long id){
+    public MessageDto getMessageById(Long id){
         bookingId(id);
         if(bookingId(id).isEmpty()){
             throw new RecordNotFoundException("Booking does not exist, try another id");
         } else {
             Message message = bookingId(id).get();
-            MessageDto dto = fromBooking(message);
+            MessageDto dto = fromMessageToDto(message);
             return dto;
         }
     }
     
-    public MessageDto createBooking(MessageDto messageDto){
-        Message message = toBooking(messageDto);
+    public MessageDto createMessage(MessageDto messageDto){
+        Message message = toMessageFromDto(messageDto);
         
         Message newBooking = messageRepository.save(message);
-        MessageDto dto = fromBooking(newBooking);
+        MessageDto dto = fromMessageToDto(newBooking);
         return dto;
     }
 
-    public boolean deleteBookingById(Long id){
+    public MessageDto updateMessage(Long id, MessageDto messageDto){
+        if(messageRepository.findById(id).isPresent()){
+            Message message = messageRepository.findById(id).get();
+
+            Message updateMessage = toMessageFromDto(messageDto);
+
+            message.setFinalDate(updateMessage.getFinalDate());
+
+            messageRepository.save(message);
+            return fromMessageToDto(message);
+        } else {
+            throw new RecordNotFoundException("Message with this id does not exist");
+        }
+    }
+
+    public boolean deleteMessageById(Long id){
         if(bookingIdCheck(id)) {
             messageRepository.deleteById(id);
             return true;
@@ -57,19 +72,19 @@ public class BookAnDJService {
     }
 
 
-    private MessageDto fromBooking(Message message){
+    private MessageDto fromMessageToDto(Message message){
         MessageDto dto = new MessageDto();
         dto.setId(message.getId());
         dto.setMessage(message.getMessage());
-        dto.setBookingDate(message.getDate());
+        dto.setFinalDate(message.getFinalDate());
         return dto;
     }
 
-    private Message toBooking (MessageDto dto){
+    private Message toMessageFromDto(MessageDto dto){
         Message message = new Message();
         message.setId(dto.getId());
         message.setMessage(dto.getMessage());
-        message.setDate(dto.getBookingDate());
+        message.setFinalDate(dto.getFinalDate());
         return message;
     }
 

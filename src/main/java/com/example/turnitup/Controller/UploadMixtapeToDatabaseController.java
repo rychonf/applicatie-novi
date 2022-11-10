@@ -26,8 +26,8 @@ public class UploadMixtapeToDatabaseController {
     }
 
     @PostMapping(value = "/uploadToDB")
-    public UploadResponse mixtapeUpload(@RequestParam("mixtape")MultipartFile mixtapeFile) throws IOException{
-        Mixtape mixtape = databaseService.uploadFileDocument(mixtapeFile);
+    public UploadResponse mixtapeUpload(@RequestParam("mixtape")MultipartFile mixtapeFile, @RequestParam("djId") Long id) throws IOException{
+        Mixtape mixtape = databaseService.uploadFileDocument(mixtapeFile, id);
         String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadMixtapeFromDB/")
                 .path(Objects.requireNonNull(mixtapeFile.getOriginalFilename())).toUriString();
 

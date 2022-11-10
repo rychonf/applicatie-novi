@@ -4,6 +4,7 @@ import com.example.turnitup.DTO.DJDto;
 import com.example.turnitup.Exception.RecordNotFoundException;
 import com.example.turnitup.Model.DJ;
 import com.example.turnitup.Repository.DJRepository;
+import com.example.turnitup.Repository.RatingRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,8 +17,11 @@ public class DJService {
 
     private final DJRepository djRepository;
 
-    public DJService(DJRepository djRepository) {
+    private final RatingRepository ratingRepository;
+
+    public DJService(DJRepository djRepository, RatingRepository ratingRepository) {
         this.djRepository = djRepository;
+        this.ratingRepository = ratingRepository;
     }
 
     public List<DJDto> getAllDJs(){
@@ -54,12 +58,11 @@ public class DJService {
             DJ dj = djRepository.findById(id).get();
 
             DJ updateDJ = toDJFromDto(djDto);
-            updateDJ.setId(dj.getId());
 
-            dj.setName(updateDJ.getName());
+            dj.setDjName(updateDJ.getDjName());
             dj.setMusicSpecialty(updateDJ.getMusicSpecialty());
             dj.setPricePerHour(updateDJ.getPricePerHour());
-            dj.setTypeOfSubscription(updateDJ.getTypeOfSubscription());
+
 
             djRepository.save(dj);
             return fromDJToDto(dj);
@@ -97,10 +100,9 @@ public class DJService {
         DJDto dto = new DJDto();
 
         dto.setId(dj.getId());
-        dto.setName(dj.getName());
+        dto.setDjName(dj.getDjName());
         dto.setMusicSpecialty(dj.getMusicSpecialty());
         dto.setPricePerHour(dj.getPricePerHour());
-//        dto.setTypeOfSubscription(dj.getTypeOfSubscription());
 
         return dto;
     }
@@ -109,10 +111,9 @@ public class DJService {
         DJ dj = new DJ();
 
         dj.setId(dto.getId());
-        dj.setName(dto.getName());
+        dj.setDjName(dto.getDjName());
         dj.setMusicSpecialty(dto.getMusicSpecialty());
         dj.setPricePerHour(dto.getPricePerHour());
-//        dj.setTypeOfSubscription(dto.getTypeOfSubscription());
 
         return dj;
     }

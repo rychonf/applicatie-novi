@@ -23,7 +23,6 @@ public class Organisation {
     private Long id;
     private String name;
     private int organizedEvents;
-    private char typeOfSubscription;
 
     @ManyToOne
     @JoinColumn(name = "fk_message")

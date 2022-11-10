@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -23,5 +24,9 @@ public class Rating {
     private Long id;
     private LocalDate dateRated;
     private int rating;
+
+    @OneToMany
+    private List<DJ> dj;
+
 
 }

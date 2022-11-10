@@ -18,6 +18,4 @@ public class OrganisationDto {
     private String name;
     private int organizedEvents;
 
-//    private char typeOfSubscription;
-
 }

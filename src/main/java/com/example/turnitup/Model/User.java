@@ -31,6 +31,9 @@ public class User {
     private boolean enabled = true;
 
     @Column
+    private char typeOfSubscription;
+
+    @Column
     private String email;
 
     @OneToMany(

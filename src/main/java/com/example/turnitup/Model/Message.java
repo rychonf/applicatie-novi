@@ -27,7 +27,7 @@ public class Message {
     private String message;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate date;
+    private LocalDate finalDate;
 
 
 
