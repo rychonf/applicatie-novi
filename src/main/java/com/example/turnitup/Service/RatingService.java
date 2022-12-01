@@ -92,7 +92,6 @@ public class RatingService {
     private RatingDto fromRating(Rating rating){
         RatingDto dto = new RatingDto();
 
-        dto.setId(rating.getId());
         dto.setDateRated(rating.getDateRated());
         dto.setRating(rating.getRating());
         return dto;
@@ -101,7 +100,6 @@ public class RatingService {
     private Rating toRating(RatingDto dto){
         Rating rating = new Rating();
 
-        rating.setId(dto.getId());
         rating.setDateRated(dto.getDateRated());
         rating.setRating(dto.getRating());
         return rating;

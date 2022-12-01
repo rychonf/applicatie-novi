@@ -87,7 +87,6 @@ public class OrganisationService {
     private OrganisationDto fromOrganisationToDto (Organisation organisation){
         OrganisationDto dto = new OrganisationDto();
 
-        dto.setId(organisation.getId());
         dto.setName(organisation.getName());
         dto.setOrganizedEvents(organisation.getOrganizedEvents());
         return dto;
@@ -96,7 +95,6 @@ public class OrganisationService {
     private Organisation toOrganisationFromDto (OrganisationDto dto){
         Organisation organisation = new Organisation();
 
-        organisation.setId(dto.getId());
         organisation.setName(dto.getName());
         organisation.setOrganizedEvents(dto.getOrganizedEvents());
         return organisation;

@@ -14,9 +14,6 @@ import java.time.LocalDate;
 @Getter
 public class RatingDto {
 
-    @NotNull
-    private Long id;
-
     private LocalDate dateRated;
     private int rating;
 

@@ -12,9 +12,6 @@ import lombok.Setter;
 @Getter
 public class OrganisationDto {
 
-    @NotNull
-    private Long id;
-
     private String name;
     private int organizedEvents;
 

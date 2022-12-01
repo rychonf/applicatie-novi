@@ -14,8 +14,6 @@ import java.time.LocalDate;
 @Getter
 public class MixtapeDto {
 
-    @NotNull
-    private Long id;
     private String fileName;
     private LocalDate dateUploaded;
     private int timesPlayed;

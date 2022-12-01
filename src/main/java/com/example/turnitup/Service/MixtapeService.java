@@ -77,7 +77,6 @@ public class MixtapeService {
     private MixtapeDto fromMixtapeToDto(Mixtape mixtape){
         MixtapeDto dto = new MixtapeDto();
 
-        dto.setId(mixtape.getId());
         dto.setFileName(mixtape.getFileName());
         dto.setDateUploaded(mixtape.getDateUploaded());
         dto.setTimesPlayed(mixtape.getTimesPlayed());
@@ -87,7 +86,6 @@ public class MixtapeService {
     private Mixtape toMixtapeFromDto (MixtapeDto dto){
         Mixtape mixtape = new Mixtape();
 
-        mixtape.setId(dto.getId());
         mixtape.setDateUploaded(dto.getDateUploaded());
         mixtape.setTimesPlayed(mixtape.getTimesPlayed());
         return mixtape;

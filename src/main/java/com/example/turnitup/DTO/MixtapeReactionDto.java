@@ -14,8 +14,5 @@ import javax.validation.constraints.NotNull;
 
 public class MixtapeReactionDto {
 
-    @NotNull
-    private Long id;
-
     private String reaction;
 }

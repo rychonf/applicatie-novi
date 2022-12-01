@@ -74,7 +74,6 @@ public class MessageService {
 
     private MessageDto fromMessageToDto(Message message){
         MessageDto dto = new MessageDto();
-        dto.setId(message.getId());
         dto.setMessage(message.getMessage());
         dto.setFinalDate(message.getFinalDate());
         return dto;
@@ -82,7 +81,6 @@ public class MessageService {
 
     private Message toMessageFromDto(MessageDto dto){
         Message message = new Message();
-        message.setId(dto.getId());
         message.setMessage(dto.getMessage());
         message.setFinalDate(dto.getFinalDate());
         return message;

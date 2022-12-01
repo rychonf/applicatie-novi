@@ -99,7 +99,6 @@ public class DJService {
     private DJDto fromDJToDto (DJ dj){
         DJDto dto = new DJDto();
 
-        dto.setId(dj.getId());
         dto.setDjName(dj.getDjName());
         dto.setMusicSpecialty(dj.getMusicSpecialty());
         dto.setPricePerHour(dj.getPricePerHour());
@@ -110,7 +109,6 @@ public class DJService {
     private DJ toDJFromDto(DJDto dto){
         DJ dj = new DJ();
 
-        dj.setId(dto.getId());
         dj.setDjName(dto.getDjName());
         dj.setMusicSpecialty(dto.getMusicSpecialty());
         dj.setPricePerHour(dto.getPricePerHour());

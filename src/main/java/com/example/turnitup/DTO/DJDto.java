@@ -12,9 +12,6 @@ import lombok.Setter;
 @Getter
 public class DJDto {
 
-    @NotNull
-    private long id;
-
     private String djName;
     private String musicSpecialty;
     private double pricePerHour;

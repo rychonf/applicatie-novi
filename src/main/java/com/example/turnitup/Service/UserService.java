@@ -6,6 +6,9 @@ import com.example.turnitup.Model.Authority;
 import com.example.turnitup.Model.User;
 import com.example.turnitup.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +44,12 @@ public class UserService {
     }
 
     public boolean userExists(String username) {
+
         return userRepository.existsById(username);
+    }
+
+    public String currentUserName(Authentication authentication) {
+        return authentication.getName();
     }
 
     public String createUser(UserDto userDto) {

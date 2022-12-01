@@ -14,9 +14,6 @@ import java.time.LocalDate;
 @Getter
 public class MessageDto {
 
-    @NotNull
-    private Long id;
-
     private String message;
     private LocalDate finalDate;
 }
