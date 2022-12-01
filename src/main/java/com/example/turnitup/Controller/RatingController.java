@@ -47,7 +47,7 @@ public class RatingController {
         } else {
             RatingDto newRatingDto = ratingService.createRating(ratingDto, djName);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{djName}")
-                    .buildAndExpand(newRatingDto.getId()).toUri();
+                    .buildAndExpand(newRatingDto.getRating()).toUri();
             return ResponseEntity.created(location).build();
         }
     }

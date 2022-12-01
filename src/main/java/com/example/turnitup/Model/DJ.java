@@ -23,10 +23,13 @@ public class DJ {
     @GeneratedValue
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String djName;
 
+    @Column(nullable = false)
     private String musicSpecialty;
+
+    @Column(nullable = false)
     private double pricePerHour;
 
 

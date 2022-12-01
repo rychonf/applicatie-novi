@@ -59,7 +59,7 @@ public class DJController {
         } else {
             DJDto newDJDto = djService.createDJ(djDto);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                    .buildAndExpand(newDJDto.getId()).toUri();
+                    .buildAndExpand(newDJDto.getDjName()).toUri();
             return ResponseEntity.created(location).build();
         }
     }

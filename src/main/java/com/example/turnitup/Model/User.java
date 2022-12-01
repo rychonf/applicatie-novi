@@ -19,7 +19,6 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
 
-
     @Id
     @Column(nullable = false, unique = true)
     private String username;
@@ -30,10 +29,9 @@ public class User {
     @Column(nullable = false)
     private boolean enabled = true;
 
-    @Column
     private char typeOfSubscription;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String email;
 
     @OneToMany(

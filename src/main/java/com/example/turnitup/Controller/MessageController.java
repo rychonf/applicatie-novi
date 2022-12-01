@@ -59,7 +59,7 @@ public class MessageController {
         } else {
             MessageDto newBookingDto = messageService.createMessage(messageDto);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                    .buildAndExpand(newBookingDto.getId()).toUri();
+                    .buildAndExpand(newBookingDto.getMessage()).toUri();
             return ResponseEntity.created(location).build();
         }
     }

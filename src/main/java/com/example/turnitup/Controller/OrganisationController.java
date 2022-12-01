@@ -60,7 +60,7 @@ public class OrganisationController {
         } else {
             OrganisationDto newOrganisationDto = organisationService.createOrganisation(organisationDto);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                    .buildAndExpand(newOrganisationDto.getId()).toUri();
+                    .buildAndExpand(newOrganisationDto.getName()).toUri();
             return ResponseEntity.created(location).build();
         }
     }

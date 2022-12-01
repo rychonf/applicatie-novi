@@ -26,6 +26,7 @@ public class Message {
     private Long id;
     private String message;
 
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate finalDate;
 
