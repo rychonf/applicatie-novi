@@ -24,14 +24,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 public class SecurityFilter   {
 
-    @Autowired
    CustomUserDetailService customUserDetailsService;
 
-    @Autowired
-    JwtRequestFilter jwtRequestFilter;
+   JwtRequestFilter jwtRequestFilter;
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder();}
+    public SecurityFilter(CustomUserDetailService customUserDetailsService, JwtRequestFilter jwtRequestFilter) {
+        this.customUserDetailsService = customUserDetailsService;
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
     @Bean
     public UserDetailsService userDetailsService(){
@@ -39,13 +39,9 @@ public class SecurityFilter   {
     }
 
     @Bean
-    public AuthenticationManager authManager(HttpSecurity http, PasswordEncoder passwordEncoder)
+    public AuthenticationManager authenticationManagerManager(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoder)
-                .and()
-                .build();
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
@@ -65,7 +61,8 @@ public class SecurityFilter   {
                 .antMatchers("/mixtape/uploadToDB").hasRole("DJ")
                 .antMatchers("/mixtape/**").hasAnyRole("ADMIN", "ORGANISATION", "DJ")
                 .antMatchers("/rating/**").hasAnyRole("ADMIN", "ORGANISATION")
-                .antMatchers("/users/**").hasRole("ADMIN")
+                .antMatchers("/users/**").permitAll()
+//                .antMatchers("/users/**").hasRole("ADMIN")
                 .antMatchers("/**").denyAll()
                 .and()
                 .httpBasic().disable()
