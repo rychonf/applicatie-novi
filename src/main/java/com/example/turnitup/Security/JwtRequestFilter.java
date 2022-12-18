@@ -1,7 +1,6 @@
 package com.example.turnitup.Security;
 
 import com.example.turnitup.Service.CustomUserDetailService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,11 +17,13 @@ import java.io.IOException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private CustomUserDetailService userDetailsService;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final CustomUserDetailService userDetailsService;
+    private final JwtUtil jwtUtil;
+    public JwtRequestFilter(CustomUserDetailService userDetailsService, JwtUtil jwtUtil) {
+        this.userDetailsService = userDetailsService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
