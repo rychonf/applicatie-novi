@@ -4,7 +4,6 @@ import com.example.turnitup.DTO.AuthenticationRequest;
 import com.example.turnitup.DTO.AuthenticationResponse;
 import com.example.turnitup.Security.JwtUtil;
 import com.example.turnitup.Service.CustomUserDetailService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,15 +19,17 @@ import java.security.Principal;
 
 @RestController
 public class AuthenticationController {
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final CustomUserDetailService userDetailsService;
 
-    @Autowired
-    private CustomUserDetailService userDetailsService;
-
-    @Autowired
     JwtUtil jwtUtl;
+
+    public AuthenticationController(AuthenticationManager authenticationManager, CustomUserDetailService userDetailsService, JwtUtil jwtUtl) {
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.jwtUtl = jwtUtl;
+    }
 
     @GetMapping(value = "/authenticated")
     public ResponseEntity<Object> authenticated(Authentication authentication, Principal principal) {
