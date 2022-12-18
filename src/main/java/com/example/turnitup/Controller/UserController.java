@@ -43,7 +43,8 @@ public class UserController {
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {;
 
         String newUsername = userService.createUser(dto);
-        userService.addAuthority(newUsername, "ROLE_{new role}");
+        userService.addAuthority(newUsername, "ROLE_ORGANISATION");
+        userService.addAuthority(newUsername, "ROLE_DJ");
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
                 .buildAndExpand(newUsername).toUri();
