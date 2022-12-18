@@ -20,8 +20,11 @@ import java.util.Set;
 @Service
 public class UserService {
 
-    @Autowired
     private UserRepository userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
 
     public List<UserDto> getUsers() {
         List<UserDto> collection = new ArrayList<>();
@@ -98,7 +101,6 @@ public class UserService {
 
         dto.setUsername(user.getUsername());
         dto.setPassword(user.getPassword());
-        dto.setEnabled(user.isEnabled());
         dto.setEmail(user.getEmail());
         dto.setTypeOfSubscription(user.getTypeOfSubscription());
         dto.setAuthorities(user.getAuthorities());
@@ -112,7 +114,6 @@ public class UserService {
 
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
-        user.setEnabled(userDto.getEnabled());
         user.setTypeOfSubscription(userDto.getTypeOfSubscription());
         user.setEmail(userDto.getEmail());
 

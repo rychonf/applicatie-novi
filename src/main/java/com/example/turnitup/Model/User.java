@@ -26,8 +26,8 @@ public class User {
     @Column(nullable = false, length = 255)
     private String password;
 
-    @Column(nullable = false)
-    private boolean enabled = true;
+//    @Column(nullable = false)
+//    private boolean enabled = true;
 
     private char typeOfSubscription;
 
