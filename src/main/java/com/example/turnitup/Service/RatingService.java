@@ -5,6 +5,7 @@ import com.example.turnitup.Exception.RecordNotFoundException;
 import com.example.turnitup.Model.DJ;
 import com.example.turnitup.Model.Rating;
 import com.example.turnitup.Repository.DJRepository;
+import com.example.turnitup.Repository.OrganisationRepository;
 import com.example.turnitup.Repository.RatingRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +18,12 @@ public class RatingService {
 
     RatingRepository ratingRepository;
     DJRepository djRepository;
+    OrganisationRepository organisationRepository;
 
-    public RatingService(RatingRepository ratingRepository) {
+    public RatingService(RatingRepository ratingRepository, DJRepository djRepository, OrganisationRepository organisationRepository) {
         this.ratingRepository = ratingRepository;
+        this.djRepository = djRepository;
+        this.organisationRepository = organisationRepository;
     }
 
     public List<RatingDto> getAllRatings(){
