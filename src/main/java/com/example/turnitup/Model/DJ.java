@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -40,6 +41,9 @@ public class DJ {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "mixtape_id", referencedColumnName = "id")
     private Mixtape mixtape;
+
+    @OneToMany
+    private List<Booking> booking;
 
 
 }
