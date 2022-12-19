@@ -1,7 +1,7 @@
-INSERT INTO users (username, password, type_of_subscription, email)
-VALUES ('rych', '$2a$09$xPHYNdG7Gf5bO1XfkX/aruqu/zpIF4XG875s2CNNgoRcHf7e97bkG', 'a', 'rf@hotmail.com'),
-('henk', '$2a$12$pbHsDSreoLnqf0QTzl4qkuAif3Y2lx7WeErvlOCvzGDXVb9.ic5hy', 'y', 'djhenk@hotmail.com'),
-('tim', '$2a$12$g5xAiVMJlYhiNzFre/ybSOWOjN1sshhraUWdim7NHej.tSOeDL736', 'y', 'harderstyles@hotmail.com');
+INSERT INTO users (username, password, enabled, type_of_subscription, email)
+VALUES ('rych', '$2y$12$JLRuapWuUJ2VHfd597QMBupQ38b60.n9/kYGUO.VutUYWWX4exr32', true, 'a', 'rf@hotmail.com'),
+('henk', '$2a$12$pbHsDSreoLnqf0QTzl4qkuAif3Y2lx7WeErvlOCvzGDXVb9.ic5hy', true,'y', 'djhenk@hotmail.com'),
+('tim', '$2a$12$g5xAiVMJlYhiNzFre/ybSOWOjN1sshhraUWdim7NHej.tSOeDL736', true, 'y', 'harderstyles@hotmail.com');
 
 INSERT INTO authorities (id, username, authority)
 VALUES (30010, 'rych', 'ROLE_ADMIN'),
