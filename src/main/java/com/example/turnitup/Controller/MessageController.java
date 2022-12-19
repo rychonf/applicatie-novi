@@ -2,7 +2,6 @@ package com.example.turnitup.Controller;
 
 import com.example.turnitup.DTO.MessageDto;
 import com.example.turnitup.Service.MessageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,13 +20,14 @@ public class MessageController {
 
     private final MessageService messageService;
 
-    @Autowired
+
     public MessageController(MessageService messageService) {
+
         this.messageService = messageService;
     }
 
     @GetMapping(value = "/list")
-    public ResponseEntity<List<MessageDto>> getAllBookings(){
+    public ResponseEntity<List<MessageDto>> getAllMessages(){
         List<MessageDto> messageDtoList = messageService.getAllMessages();
         if(messageDtoList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -36,18 +36,8 @@ public class MessageController {
         }
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<MessageDto> getBookingById(@PathVariable Long id){
-        Optional<MessageDto> bookAnDJDto = Optional.ofNullable(messageService.getMessageById(id));
-        if (bookAnDJDto.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(bookAnDJDto.get(), HttpStatus.OK);
-        }
-    }
-
     @PostMapping(value = "/create")
-    public ResponseEntity<Object> createBooking(@Valid @RequestBody MessageDto messageDto, BindingResult br) {
+    public ResponseEntity<Object> createMessage(@Valid @RequestBody MessageDto messageDto, BindingResult br) {
         StringBuilder sb = new StringBuilder();
         if (br.hasErrors()){
             for (FieldError fieldError : br.getFieldErrors()) {
@@ -72,7 +62,7 @@ public class MessageController {
 
 
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<MessageDto> deleteBooking(@PathVariable Long id){
+    public ResponseEntity<MessageDto> deleteMessage(@PathVariable Long id){
         if (messageService.deleteMessageById(id)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
