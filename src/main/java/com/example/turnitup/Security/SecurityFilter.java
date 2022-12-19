@@ -62,6 +62,7 @@ public class SecurityFilter   {
                 .antMatchers("/mixtape/**").hasAnyRole("ADMIN", "ORGANISATION", "DJ")
                 .antMatchers("/rating/**").hasAnyRole("ADMIN", "ORGANISATION")
                 .antMatchers("/users/**").permitAll()
+                .antMatchers("/booking").permitAll()
 //                .antMatchers("/users/**").hasRole("ADMIN")
                 .antMatchers("/**").denyAll()
                 .and()
