@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -27,6 +28,9 @@ public class Organisation {
     @ManyToOne
     @JoinColumn(name = "fk_message")
     private Message message;
+
+    @OneToMany
+    private List<Booking> booking;
 
 
 }
