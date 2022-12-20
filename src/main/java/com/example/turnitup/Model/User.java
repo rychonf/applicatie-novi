@@ -26,12 +26,13 @@ public class User {
     @Column(nullable = false, length = 255)
     private String password;
 
-//    @Column(nullable = false)
-//    private boolean enabled = true;
+    @Column(nullable = false)
+    private boolean enabled = true;
 
+    @Column
     private char typeOfSubscription;
 
-    @Column(nullable = false, unique = true)
+    @Column
     private String email;
 
     @OneToMany(
