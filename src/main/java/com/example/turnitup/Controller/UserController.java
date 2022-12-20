@@ -2,6 +2,7 @@ package com.example.turnitup.Controller;
 
 import com.example.turnitup.DTO.UserDto;
 import com.example.turnitup.Exception.BadRequestException;
+import com.example.turnitup.Exception.RecordNotFoundException;
 import com.example.turnitup.Service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,12 +41,18 @@ public class UserController {
     }
 
     @PostMapping(value = "")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {;
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto, @RequestParam("Role") String role) {
 
         String newUsername = userService.createUser(dto);
-        userService.addAuthority(newUsername, "ROLE_{new role}");
-//        userService.addAuthority(newUsername, "ROLE_ORGANISATION");
-//        userService.addAuthority(newUsername, "ROLE_DJ");
+
+        if(role.equals("DJ")){
+            userService.addAuthority(newUsername, "ROLE_DJ");
+        } else if
+            (role.equals("ORGANISATION"))
+            userService.addAuthority(newUsername, "ROLE_ORGANISATION");
+        else {
+            throw new BadRequestException("Something went wrong");
+        }
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
                 .buildAndExpand(newUsername).toUri();
@@ -80,7 +87,7 @@ public class UserController {
             return ResponseEntity.noContent().build();
         }
         catch (Exception ex) {
-            throw new BadRequestException();
+            throw new BadRequestException("Something went wrong");
         }
     }
 
