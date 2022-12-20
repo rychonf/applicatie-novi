@@ -46,7 +46,7 @@ public class DJController {
         }
     }
 
-    @PostMapping(value = "/create")
+    @PostMapping(value = "")
     public ResponseEntity<Object> createDJ(@Valid @RequestBody DJDto djDto, BindingResult br) {
         StringBuilder sb = new StringBuilder();
         if (br.hasErrors()){
@@ -64,7 +64,7 @@ public class DJController {
         }
     }
 
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<DJDto> updateDJ(@PathVariable Long id, @RequestBody DJDto djDto){
 
         DJDto dto = djService.updateDJ(id, djDto);
@@ -73,7 +73,7 @@ public class DJController {
 
         }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<DJDto> deleteDJ(@PathVariable Long id){
         if(djService.deleteDJById(id)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
