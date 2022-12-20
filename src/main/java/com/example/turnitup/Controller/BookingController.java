@@ -38,21 +38,16 @@ public class BookingController {
     @GetMapping(value = "/list")
     public ResponseEntity<List<BookingDto>> getAllBookings(){
         List<BookingDto> bookingDtoList = bookingService.getAllBookings();
-        if(bookingDtoList.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
+
             return new ResponseEntity<>(bookingDtoList, HttpStatus.OK);
-        }
+
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<BookingDto> getBookingById(@PathVariable Long id){
         Optional<BookingDto> bookingDto = Optional.ofNullable(bookingService.getBookingById(id));
-        if(bookingDto.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(bookingDto.get(), HttpStatus.OK);
-        }
+
+        return new ResponseEntity<>(bookingDto.get(), HttpStatus.OK);
     }
 
 
@@ -76,7 +71,7 @@ public class BookingController {
         }
     }
 
-    @PutMapping(value = "")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<BookingDto> updateBooking(@PathVariable Long id, @RequestBody BookingDto bookingDto){
 
         BookingDto dto = bookingService.updateBooking(id, bookingDto);
