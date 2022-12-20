@@ -5,10 +5,6 @@ import com.example.turnitup.Exception.RecordNotFoundException;
 import com.example.turnitup.Model.Authority;
 import com.example.turnitup.Model.User;
 import com.example.turnitup.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +17,10 @@ import java.util.Set;
 public class UserService {
 
     private UserRepository userRepository;
+
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
 
     public List<UserDto> getUsers() {
         List<UserDto> collection = new ArrayList<>();
@@ -49,10 +45,6 @@ public class UserService {
     public boolean userExists(String username) {
 
         return userRepository.existsById(username);
-    }
-
-    public String currentUserName(Authentication authentication) {
-        return authentication.getName();
     }
 
     public String createUser(UserDto userDto) {
@@ -101,6 +93,7 @@ public class UserService {
 
         dto.setUsername(user.getUsername());
         dto.setPassword(user.getPassword());
+        dto.setEnabled(user.isEnabled());
         dto.setEmail(user.getEmail());
         dto.setTypeOfSubscription(user.getTypeOfSubscription());
         dto.setAuthorities(user.getAuthorities());
@@ -114,6 +107,7 @@ public class UserService {
 
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
+        user.setEnabled(userDto.getEnabled());
         user.setTypeOfSubscription(userDto.getTypeOfSubscription());
         user.setEmail(userDto.getEmail());
 

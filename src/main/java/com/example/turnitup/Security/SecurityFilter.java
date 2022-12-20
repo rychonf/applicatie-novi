@@ -34,14 +34,21 @@ public class SecurityFilter   {
     }
 
     @Bean
+    public PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder();}
+
+    @Bean
     public UserDetailsService userDetailsService(){
         return customUserDetailsService;
     }
 
     @Bean
-    public AuthenticationManager authenticationManagerManager(AuthenticationConfiguration authenticationConfiguration)
+    public AuthenticationManager authManager(HttpSecurity http, PasswordEncoder passwordEncoder)
             throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(customUserDetailsService)
+                .passwordEncoder(passwordEncoder)
+                .and()
+                .build();
     }
 
     @Bean
@@ -62,7 +69,7 @@ public class SecurityFilter   {
                 .antMatchers("/mixtape/**").hasAnyRole("ADMIN", "ORGANISATION", "DJ")
                 .antMatchers("/rating/**").hasAnyRole("ADMIN", "ORGANISATION")
                 .antMatchers("/users/**").permitAll()
-                .antMatchers("/booking").permitAll()
+                .antMatchers("/booking/**").permitAll()
 //                .antMatchers("/users/**").hasRole("ADMIN")
                 .antMatchers("/**").denyAll()
                 .and()
