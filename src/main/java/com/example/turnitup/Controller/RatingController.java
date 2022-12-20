@@ -34,7 +34,7 @@ public class RatingController {
         }
     }
 
-    @PostMapping(value = "/create")
+    @PostMapping(value = "")
     public ResponseEntity<Object> createRating(@Valid @RequestBody RatingDto ratingDto, @RequestParam(name = "djName") String djName, BindingResult br) {
         StringBuilder sb = new StringBuilder();
         if (br.hasErrors()){
@@ -52,7 +52,7 @@ public class RatingController {
         }
     }
 
-    @PutMapping(value = "update/{djName}")
+    @PutMapping(value = "/{djName}")
     public ResponseEntity<RatingDto> updateRating(@PathVariable Long id, @RequestBody RatingDto ratingDto) {
 
         RatingDto dto = ratingService.updateRating(id, ratingDto);
@@ -60,7 +60,7 @@ public class RatingController {
         return ResponseEntity.ok().body(dto);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<RatingDto> deleteRating(@PathVariable Long id){
         if(ratingService.deleteRatingById(id)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

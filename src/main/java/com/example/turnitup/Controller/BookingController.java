@@ -35,7 +35,7 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-    @GetMapping(value = "")
+    @GetMapping(value = "/list")
     public ResponseEntity<List<BookingDto>> getAllBookings(){
         List<BookingDto> bookingDtoList = bookingService.getAllBookings();
         if(bookingDtoList.isEmpty()){
@@ -56,7 +56,7 @@ public class BookingController {
     }
 
 
-    @PostMapping(value = "/t")
+    @PostMapping(value = "")
     public ResponseEntity<Object> createBooking(@Valid @RequestBody BookingDto bookingDto,
                                                 @RequestParam("djName") String djName ,
                                                 @RequestParam("organisationName") String organisationName, BindingResult br) {

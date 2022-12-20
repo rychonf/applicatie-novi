@@ -47,7 +47,7 @@ public class OrganisationController {
         }
     }
 
-    @PostMapping(value = "/create")
+    @PostMapping(value = "")
     public ResponseEntity<Object> createOrganisation(@Valid @RequestBody OrganisationDto organisationDto, BindingResult br){
         StringBuilder sb = new StringBuilder();
         if (br.hasErrors()){
@@ -65,7 +65,7 @@ public class OrganisationController {
         }
     }
 
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<OrganisationDto> updateOrganisation(@PathVariable Long id, @RequestBody OrganisationDto organisationDto){
 
         OrganisationDto dto = organisationService.updateOrganisation(id, organisationDto);
@@ -73,7 +73,7 @@ public class OrganisationController {
         return ResponseEntity.ok().body(dto);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<OrganisationDto> deleteOrganisation(@PathVariable Long id){
         if(organisationService.deleteOrganisationById(id)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

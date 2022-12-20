@@ -39,12 +39,13 @@ public class UserController {
 
     }
 
-    @PostMapping(value = "/create")
+    @PostMapping(value = "")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {;
 
         String newUsername = userService.createUser(dto);
-        userService.addAuthority(newUsername, "ROLE_ORGANISATION");
-        userService.addAuthority(newUsername, "ROLE_DJ");
+        userService.addAuthority(newUsername, "ROLE_{new role}");
+//        userService.addAuthority(newUsername, "ROLE_ORGANISATION");
+//        userService.addAuthority(newUsername, "ROLE_DJ");
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
                 .buildAndExpand(newUsername).toUri();
@@ -52,7 +53,7 @@ public class UserController {
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping(value = "/update/{username}")
+    @PutMapping(value = "/{username}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("username") String username, @RequestBody UserDto dto) {
 
         userService.updateUser(username, dto);
@@ -60,7 +61,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping(value = "/delete/{username}")
+    @DeleteMapping(value = "/{username}")
     public ResponseEntity<Object> deleteUser(@PathVariable("username") String username) {
         userService.deleteUser(username);
         return ResponseEntity.noContent().build();

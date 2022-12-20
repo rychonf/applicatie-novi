@@ -36,7 +36,7 @@ public class MessageController {
         }
     }
 
-    @PostMapping(value = "/create")
+    @PostMapping(value = "")
     public ResponseEntity<Object> createMessage(@Valid @RequestBody MessageDto messageDto, BindingResult br) {
         StringBuilder sb = new StringBuilder();
         if (br.hasErrors()){
@@ -54,14 +54,14 @@ public class MessageController {
         }
     }
 
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<MessageDto> updateMessage(@PathVariable Long id, @RequestBody MessageDto messageDto){
         MessageDto dto = messageService.updateMessage(id, messageDto);
         return ResponseEntity.ok().body(dto);
     }
 
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<MessageDto> deleteMessage(@PathVariable Long id){
         if (messageService.deleteMessageById(id)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
