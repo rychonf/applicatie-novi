@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.mapping.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,6 +34,7 @@ public class User {
     private char typeOfSubscription;
 
     @Column
+    @Email
     private String email;
 
     @OneToMany(
