@@ -53,8 +53,6 @@ public class MessageService {
 
             Message updateMessage = toMessageFromDto(messageDto);
 
-            message.setFinalDate(updateMessage.getFinalDate());
-
             messageRepository.save(message);
             return fromMessageToDto(message);
         } else {
@@ -75,14 +73,12 @@ public class MessageService {
     private MessageDto fromMessageToDto(Message message){
         MessageDto dto = new MessageDto();
         dto.setMessage(message.getMessage());
-        dto.setFinalDate(message.getFinalDate());
         return dto;
     }
 
     private Message toMessageFromDto(MessageDto dto){
         Message message = new Message();
         message.setMessage(dto.getMessage());
-        message.setFinalDate(dto.getFinalDate());
         return message;
     }
 
