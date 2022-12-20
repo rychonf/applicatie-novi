@@ -15,6 +15,7 @@ public class Configuration {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public WebMvcConfigurer corsConfigurer(){
         return new WebMvcConfigurer() {
