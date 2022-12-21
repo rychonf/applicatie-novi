@@ -1,6 +1,7 @@
 package com.example.turnitup.Controller;
 
 import com.example.turnitup.DTO.DJDto;
+import com.example.turnitup.Service.BookingService;
 import com.example.turnitup.Service.DJService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,12 @@ public class DJController {
 
     private final DJService djService;
 
+    private final BookingService bookingService;
+
     @Autowired
-    public DJController(DJService djService) {
+    public DJController(DJService djService, BookingService bookingService) {
         this.djService = djService;
+        this.bookingService = bookingService;
     }
 
     @GetMapping(value = "/list")
@@ -63,6 +67,8 @@ public class DJController {
             return ResponseEntity.created(location).build();
         }
     }
+
+
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<DJDto> updateDJ(@PathVariable Long id, @RequestBody DJDto djDto){
