@@ -31,7 +31,7 @@ public class Booking {
     private double totalPrice;
 
     @ManyToOne
-////    @JoinColumn(name = "booking_dj")
+    @JoinColumn(name = "booking_dj")
     private DJ dj;
 
     @ManyToOne
