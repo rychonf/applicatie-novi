@@ -46,11 +46,6 @@ public class UserService {
         return dto;
     }
 
-    public boolean userExists(String username) {
-
-        return userRepository.existsById(username);
-    }
-
     public String createUser(UserDto userDto) {
         User newUser = userRepository.save(toUser(userDto));
         return newUser.getUsername();
