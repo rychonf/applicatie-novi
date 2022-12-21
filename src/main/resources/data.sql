@@ -14,8 +14,8 @@ VALUES (1002, 'Thunder Dome', 512);
 INSERT INTO dj (id, dj_name, music_specialty, price_per_hour)
 VALUES (1002, 'Deadly Guns', 'Hardcore, Raw-style' , 100.00);
 
-INSERT INTO message (id, message, final_date)
-VALUES (1002, 'I would like to hire Deadly Guns for 1 hour on 2022-12-31', '2022-12-31');
+INSERT INTO message (id, message)
+VALUES (1002, 'I would like to hire Deadly Guns for 1 hour on 2022-12-31');
 
 /*
     Bearer Tokens:
