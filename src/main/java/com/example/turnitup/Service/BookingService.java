@@ -1,13 +1,10 @@
 package com.example.turnitup.Service;
 
 import com.example.turnitup.DTO.BookingDto;
-import com.example.turnitup.DTO.MessageDto;
-import com.example.turnitup.DTO.OrganisationDto;
+import com.example.turnitup.Exception.DJNotFoundException;
+import com.example.turnitup.Exception.OrganisationNotFoundException;
 import com.example.turnitup.Exception.RecordNotFoundException;
-import com.example.turnitup.Model.Booking;
-import com.example.turnitup.Model.DJ;
-import com.example.turnitup.Model.Message;
-import com.example.turnitup.Model.Organisation;
+import com.example.turnitup.Model.*;
 import com.example.turnitup.Repository.BookingRepository;
 import com.example.turnitup.Repository.DJRepository;
 import com.example.turnitup.Repository.OrganisationRepository;
@@ -50,6 +47,8 @@ public class BookingService {
         }
     }
 
+
+
     public BookingDto createBooking(BookingDto bookingDto, String dj, String organisation){
         Booking booking = fromDtoToBooking(bookingDto);
         if (djRepository.findByDjName(dj).isPresent()){
@@ -69,16 +68,23 @@ public class BookingService {
         return dto;
     }
 
-    public BookingDto updateBooking(Long id, BookingDto bookingDto){
+    public BookingDto updateBooking(Long id, BookingDto bookingDto, String djName, String organisationName ){
         if(bookingRepository.findById(id).isPresent()){
             Booking booking = bookingRepository.findById(id).get();
 
             Booking updateBooking = fromDtoToBooking(bookingDto);
 
+            booking.setBookingDate(updateBooking.getBookingDate());
             booking.setHoursBooked(updateBooking.getHoursBooked());
-            booking.setDj(updateBooking.getDj());
-            booking.setOrganisation(updateBooking.getOrganisation());
             booking.setTotalPrice(updateBooking.getTotalPrice());
+
+            if (djRepository.findByDjName(djName).isPresent()){
+                booking.setDj(updateBooking.getDj());
+            } else throw new DJNotFoundException();
+
+            if(organisationRepository.findOrganisationByName(organisationName).isPresent()){
+                booking.setOrganisation(updateBooking.getOrganisation());
+            } else throw new OrganisationNotFoundException();
 
             bookingRepository.save(booking);
             return fromBookingToDto(booking);
