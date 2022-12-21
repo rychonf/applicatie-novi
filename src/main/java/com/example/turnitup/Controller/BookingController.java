@@ -1,14 +1,9 @@
 package com.example.turnitup.Controller;
 
 import com.example.turnitup.DTO.BookingDto;
-import com.example.turnitup.DTO.MessageDto;
-import com.example.turnitup.DTO.OrganisationDto;
 import com.example.turnitup.Model.DJ;
 import com.example.turnitup.Model.Organisation;
 import com.example.turnitup.Service.BookingService;
-import com.example.turnitup.Service.DJService;
-import com.example.turnitup.Service.OrganisationService;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,16 +17,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(name = "/booking")
+@RequestMapping(value = "/booking")
 public class BookingController {
 
-    private final DJService djService;
-    private final OrganisationService organisationService;
     private final BookingService bookingService;
 
-    public BookingController(DJService djService, OrganisationService organisationService, BookingService bookingService) {
-        this.djService = djService;
-        this.organisationService = organisationService;
+    public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
     }
 
@@ -50,13 +41,13 @@ public class BookingController {
         return new ResponseEntity<>(bookingDto.get(), HttpStatus.OK);
     }
 
-
     @PostMapping(value = "")
     public ResponseEntity<Object> createBooking(@Valid @RequestBody BookingDto bookingDto,
-                                                @RequestParam("djName") String djName ,
-                                                @RequestParam("organisationName") String organisationName, BindingResult br) {
+                                                @RequestParam("dj") String dj,
+                                                @RequestParam("organisation") String organisation,
+                                                BindingResult br){
         StringBuilder sb = new StringBuilder();
-        if (br.hasErrors()) {
+        if (br.hasErrors()){
             for (FieldError fieldError : br.getFieldErrors()) {
                 sb.append(fieldError.getField()).append(": ");
                 sb.append(fieldError.getDefaultMessage());
@@ -64,7 +55,7 @@ public class BookingController {
             }
             return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
         } else {
-            BookingDto newBookingDto = bookingService.createBooking(bookingDto, djName, organisationName);
+            BookingDto newBookingDto = bookingService.createBooking(bookingDto, dj, organisation);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(newBookingDto.getClass()).toUri();
             return ResponseEntity.created(location).build();
@@ -72,20 +63,18 @@ public class BookingController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BookingDto> updateBooking(@PathVariable Long id, @RequestBody BookingDto bookingDto){
+    public ResponseEntity<BookingDto> updateBooking(@PathVariable Long id, @RequestBody BookingDto bookingDto,
+                                                    String djName, String organisationName){
 
-        BookingDto dto = bookingService.updateBooking(id, bookingDto);
+        BookingDto dto = bookingService.updateBooking(id, bookingDto, djName, organisationName);
 
         return ResponseEntity.ok().body(dto);
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<BookingDto> deleteBooking(@PathVariable Long id){
-        if(bookingService.deleteBookingById(id)){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        bookingService.deleteBookingById(id);
+        return ResponseEntity.noContent().build();
     }
 
 
