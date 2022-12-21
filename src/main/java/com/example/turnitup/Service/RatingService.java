@@ -55,7 +55,10 @@ public class RatingService {
         if(djRepository.findByDjName(djName).isPresent()) {
             DJ dj = djRepository.findByDjName(djName).get();
 
-            dj.setRating(rating);
+            // if statement met een datumcheck, else if?
+
+            dj.setRating((List<Rating>) rating);
+
             djRepository.save(dj);
             return dto;
         } else throw new RecordNotFoundException("This DJ does not exist");
