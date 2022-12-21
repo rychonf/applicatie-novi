@@ -34,16 +34,15 @@ public class DJ {
     private double pricePerHour;
 
 
-    @ManyToOne
-    @JoinColumn(name = "fk_rating_id")
-    private Rating rating;
+    @OneToMany
+    private List<Rating> rating;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "mixtape_id", referencedColumnName = "id")
     private Mixtape mixtape;
 
     @OneToMany
-    private List<Booking> booking;
+    private List<Booking> bookings;
 
 
 }

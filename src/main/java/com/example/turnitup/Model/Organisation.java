@@ -28,9 +28,10 @@ public class Organisation {
     @ManyToOne
     @JoinColumn(name = "fk_message")
     private Message message;
+    // List van messages maken of multipliciteit veranderen van 0..* naar 0..1
 
     @OneToMany
-    private List<Booking> booking;
+    private List<Booking> bookings;
 
 
 }
