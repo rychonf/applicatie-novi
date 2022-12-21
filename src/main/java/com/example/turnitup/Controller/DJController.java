@@ -3,7 +3,6 @@ package com.example.turnitup.Controller;
 import com.example.turnitup.DTO.DJDto;
 import com.example.turnitup.Service.BookingService;
 import com.example.turnitup.Service.DJService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -24,7 +23,6 @@ public class DJController {
 
     private final BookingService bookingService;
 
-    @Autowired
     public DJController(DJService djService, BookingService bookingService) {
         this.djService = djService;
         this.bookingService = bookingService;
