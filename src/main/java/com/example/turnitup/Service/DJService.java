@@ -2,6 +2,7 @@ package com.example.turnitup.Service;
 
 import com.example.turnitup.DTO.DJDto;
 import com.example.turnitup.Exception.DJNotFoundException;
+import com.example.turnitup.Exception.RecordNotFoundException;
 import com.example.turnitup.Model.DJ;
 import com.example.turnitup.Repository.DJRepository;
 import com.example.turnitup.Repository.RatingRepository;
@@ -40,7 +41,7 @@ public class DJService {
             return dto;
         } else {
 
-            throw new DJNotFoundException();
+            throw new RecordNotFoundException("Dj does not exist, try another id");
         }
     }
 
@@ -67,7 +68,7 @@ public class DJService {
             djRepository.save(dj);
             return fromDJToDto(dj);
         } else {
-            throw new DJNotFoundException();
+            throw new DJNotFoundException("The dj with this id doesn't exist");
         }
     }
 
@@ -77,7 +78,7 @@ public class DJService {
             djRepository.deleteById(id);
             return true;
         } else {
-            throw new DJNotFoundException();
+            throw new DJNotFoundException("The dj with this id doesn't exist");
         }
     }
 
