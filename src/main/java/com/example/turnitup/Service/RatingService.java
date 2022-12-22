@@ -70,7 +70,7 @@ public class RatingService {
             ratingRepository.deleteById(id);
             return true;
         } else {
-            throw new RatingNotFoundException();
+            throw new RatingNotFoundException("The rating with this id doesn't exist");
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.turnitup.Service;
 
 import com.example.turnitup.DTO.BookingDto;
+import com.example.turnitup.Exception.BookingNotFoundException;
 import com.example.turnitup.Exception.DJNotFoundException;
 import com.example.turnitup.Exception.OrganisationNotFoundException;
 import com.example.turnitup.Exception.RecordNotFoundException;
@@ -80,16 +81,16 @@ public class BookingService {
 
             if (djRepository.findByDjName(djName).isPresent()){
                 booking.setDj(updateBooking.getDj());
-            } else throw new DJNotFoundException();
+            } else throw new DJNotFoundException("The dj with this name doesn't exist");
 
             if(organisationRepository.findOrganisationByName(organisationName).isPresent()){
                 booking.setOrganisation(updateBooking.getOrganisation());
-            } else throw new OrganisationNotFoundException();
+            } else throw new OrganisationNotFoundException("The organisation with this name doesn't exist");
 
             bookingRepository.save(booking);
             return fromBookingToDto(booking);
         } else {
-            throw new RecordNotFoundException("The booking with this ID doesn't exist");
+            throw new BookingNotFoundException("The booking with this ID doesn't exist");
         }
     }
 
