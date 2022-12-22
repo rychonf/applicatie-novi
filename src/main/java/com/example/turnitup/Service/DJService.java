@@ -2,7 +2,6 @@ package com.example.turnitup.Service;
 
 import com.example.turnitup.DTO.DJDto;
 import com.example.turnitup.Exception.DJNotFoundException;
-import com.example.turnitup.Exception.RecordNotFoundException;
 import com.example.turnitup.Model.DJ;
 import com.example.turnitup.Repository.DJRepository;
 import com.example.turnitup.Repository.RatingRepository;
@@ -41,7 +40,7 @@ public class DJService {
             return dto;
         } else {
 
-            throw new RecordNotFoundException("Dj does not exist, try another id");
+            throw new DJNotFoundException();
         }
     }
 
