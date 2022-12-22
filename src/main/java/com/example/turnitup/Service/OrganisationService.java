@@ -1,14 +1,13 @@
 package com.example.turnitup.Service;
 
 import com.example.turnitup.DTO.OrganisationDto;
-import com.example.turnitup.Exception.RecordNotFoundException;
+import com.example.turnitup.Exception.OrganisationNotFoundException;
 import com.example.turnitup.Model.Organisation;
 import com.example.turnitup.Repository.OrganisationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OrganisationService {
@@ -29,12 +28,12 @@ public class OrganisationService {
     }
 
     public OrganisationDto getOrganisationById(Long id){
-        if(organisationId(id).isEmpty()){
-            throw new RecordNotFoundException("Organisation does not exist, try another id");
-        } else {
-            Organisation organisation = organisationId(id).get();
+        if(organisationRepository.findById(id).isPresent()){
+            Organisation organisation = organisationRepository.findById(id).get();
             OrganisationDto dto = fromOrganisationToDto(organisation);
             return dto;
+        } else {
+            throw new OrganisationNotFoundException();
         }
     }
 
@@ -47,7 +46,7 @@ public class OrganisationService {
     }
 
     public OrganisationDto updateOrganisation(Long id, OrganisationDto organisationDto){
-        if(organisationId(id).isPresent()){
+        if(organisationRepository.findById(id).isPresent()){
             Organisation organisation = organisationRepository.findById(id).get();
 
             Organisation updateOrganisation = toOrganisationFromDto(organisationDto);
@@ -58,29 +57,16 @@ public class OrganisationService {
             organisationRepository.save(organisation);
             return fromOrganisationToDto(organisation);
         } else {
-            throw new RecordNotFoundException("An organisation with this id doesn't exists");
+            throw new OrganisationNotFoundException();
         }
     }
 
     public boolean deleteOrganisationById (Long id){
-        if(organisationIdCheck(id)){
+        if(organisationRepository.findById(id).isPresent()){
             organisationRepository.deleteById(id);
             return true;
         } else {
-            throw new RecordNotFoundException("An organisation with this id doesn't exists");
-        }
-    }
-
-    public Optional<Organisation> organisationId (Long id){
-        Optional<Organisation> organisationId = organisationRepository.findById(id);
-        return organisationId;
-    }
-
-    public boolean organisationIdCheck (Long id){
-        if (organisationId(id).isPresent()){
-            return true;
-        } else {
-            throw new RecordNotFoundException("Organisation with this id doesn't exist");
+            throw new OrganisationNotFoundException();
         }
     }
 
