@@ -40,10 +40,10 @@ public class OrganisationController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<OrganisationDto> getOrganisationById(@PathVariable Long id){
         Optional<OrganisationDto> organisationDto = Optional.ofNullable(organisationService.getOrganisationById(id));
-        if (organisationDto.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
+        if (organisationDto.isPresent()){
             return new ResponseEntity<>(organisationDto.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
