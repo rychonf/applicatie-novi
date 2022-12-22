@@ -1,6 +1,7 @@
 package com.example.turnitup.Service;
 
 import com.example.turnitup.DTO.DJDto;
+import com.example.turnitup.Exception.DJNotFoundException;
 import com.example.turnitup.Exception.RecordNotFoundException;
 import com.example.turnitup.Model.DJ;
 import com.example.turnitup.Repository.DJRepository;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DJService {
@@ -34,13 +34,14 @@ public class DJService {
     }
 
     public DJDto getDJById(Long id){
-        djId(id);
-        if(djId(id).isEmpty()){
-            throw new RecordNotFoundException("Dj does not exist, try another id");
-        } else {
-            DJ dj = djId(id).get();
+        djRepository.findById(id).get();
+        if(djRepository.findById(id).isPresent()){
+            DJ dj = djRepository.findById(id).get();
             DJDto dto = fromDJToDto(dj);
             return dto;
+        } else {
+
+            throw new RecordNotFoundException("Dj does not exist, try another id");
         }
     }
 
@@ -67,34 +68,19 @@ public class DJService {
             djRepository.save(dj);
             return fromDJToDto(dj);
         } else {
-            throw new RecordNotFoundException("No DJ was found with this id");
+            throw new DJNotFoundException();
         }
     }
 
 
     public boolean deleteDJById(Long id){
-        if(djIdCheck(id)){
+        if(djRepository.findById(id).isPresent()){
             djRepository.deleteById(id);
             return true;
         } else {
-            return false;
+            throw new DJNotFoundException();
         }
     }
-
-    // A method that gets the dj id and can be called whenever you need a dj id
-    public Optional<DJ> djId (Long id){
-        Optional<DJ> djId = djRepository.findById(id);
-        return djId;
-    }
-
-    public boolean djIdCheck (Long id){
-        if (djId(id).isPresent()){
-            return true;
-        } else {
-            throw new RecordNotFoundException("DJ id is not found");
-        }
-    }
-
 
     private DJDto fromDJToDto (DJ dj){
         DJDto dto = new DJDto();
