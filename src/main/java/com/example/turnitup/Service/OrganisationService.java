@@ -33,7 +33,7 @@ public class OrganisationService {
             OrganisationDto dto = fromOrganisationToDto(organisation);
             return dto;
         } else {
-            throw new OrganisationNotFoundException();
+            throw new OrganisationNotFoundException("The organisation with this id doesn't exist");
         }
     }
 
@@ -57,7 +57,7 @@ public class OrganisationService {
             organisationRepository.save(organisation);
             return fromOrganisationToDto(organisation);
         } else {
-            throw new OrganisationNotFoundException();
+            throw new OrganisationNotFoundException("The organisation with this id doesn't exist");
         }
     }
 
@@ -66,7 +66,7 @@ public class OrganisationService {
             organisationRepository.deleteById(id);
             return true;
         } else {
-            throw new OrganisationNotFoundException();
+            throw new OrganisationNotFoundException("The organisation with this id doesn't exist");
         }
     }
 

@@ -1,15 +1,15 @@
 package com.example.turnitup.Service;
 
 import com.example.turnitup.DTO.RatingDto;
-import com.example.turnitup.Exception.RatingNotFoundException;
-import com.example.turnitup.Exception.RecordNotFoundException;
-import com.example.turnitup.Model.DJ;
+import com.example.turnitup.Exception.*;
 import com.example.turnitup.Model.Rating;
+import com.example.turnitup.Repository.BookingRepository;
 import com.example.turnitup.Repository.DJRepository;
 import com.example.turnitup.Repository.OrganisationRepository;
 import com.example.turnitup.Repository.RatingRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,25 +20,30 @@ public class RatingService {
     RatingRepository ratingRepository;
     DJRepository djRepository;
     OrganisationRepository organisationRepository;
+    private final BookingRepository bookingRepository;
 
-    public RatingService(RatingRepository ratingRepository, DJRepository djRepository, OrganisationRepository organisationRepository) {
+    BookingService bookingService;
+
+    public RatingService(RatingRepository ratingRepository, DJRepository djRepository, OrganisationRepository organisationRepository,
+                         BookingRepository bookingRepository) {
         this.ratingRepository = ratingRepository;
         this.djRepository = djRepository;
         this.organisationRepository = organisationRepository;
+        this.bookingRepository = bookingRepository;
     }
 
-    public List<RatingDto> getAllRatings(){
+    public List<RatingDto> getAllRatings() {
         List<Rating> ratingList = ratingRepository.findAll();
         List<RatingDto> ratingDtoList = new ArrayList<>();
-        for(Rating rating : ratingList){
+        for (Rating rating : ratingList) {
             ratingDtoList.add(fromRating(rating));
         }
         return ratingDtoList;
     }
 
-    public RatingDto getRatingById(Long id){
+    public RatingDto getRatingById(Long id) {
         Optional<Rating> oneRating = ratingRepository.findById(id);
-        if(oneRating.isEmpty()){
+        if (oneRating.isEmpty()) {
             throw new RecordNotFoundException("Rating does not exist, try another id");
         } else {
             Rating rating = oneRating.get();
@@ -47,23 +52,32 @@ public class RatingService {
         }
     }
 
-    public RatingDto createRating(RatingDto ratingDto, String djName){
+    public RatingDto createRating(RatingDto ratingDto, String dj, Long bookingId) {
         Rating rating = toRating(ratingDto);
 
-        Rating newRating = ratingRepository.save(rating);
-        RatingDto dto = fromRating(newRating);
+        if (bookingRepository.findById(bookingId).isPresent()) {
 
-        if(djRepository.findByDjName(djName).isPresent()) {
-            DJ dj = djRepository.findByDjName(djName).get();
+            if (djRepository.findByDjName(dj).isPresent()) {
+                rating.setDj(djRepository.findByDjName(dj).get());
+                LocalDate bookingDate = bookingRepository.findById(bookingId).get().getBookingDate();
+                LocalDate dateToday = LocalDate.now();
 
-            // if statement met een datumcheck, else if?
+                if (dateToday.isAfter(bookingDate)) {
 
-            dj.setRating((List<Rating>) rating);
+                    Rating newRating = ratingRepository.save(rating);
+                    RatingDto dto = fromRating(newRating);
 
-            djRepository.save(dj);
-            return dto;
-        } else throw new RecordNotFoundException("This DJ does not exist");
+                    return dto;
+                } else throw new RatingToEarlyException("The booking has not taken place yet, " +
+                        "So its impossible to rate the dj his performance ");
+
+            } else throw new DJNotFoundException("The dj with this name doesn't exist");
+
+        } else throw new BookingNotFoundException("The booking with this id doesn't exist");
     }
+
+
+
 
     public boolean deleteRatingById(Long id){
         if(ratingRepository.findById(id).isPresent()){

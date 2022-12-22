@@ -35,7 +35,10 @@ public class RatingController {
     }
 
     @PostMapping(value = "")
-    public ResponseEntity<Object> createRating(@Valid @RequestBody RatingDto ratingDto, @RequestParam(name = "djName") String djName, BindingResult br) {
+    public ResponseEntity<Object> createRating(@Valid @RequestBody RatingDto ratingDto,
+                                               @RequestParam(name = "djName") String djName,
+                                               @RequestParam(name = "bookingId") Long bookingId,
+                                               BindingResult br) {
         StringBuilder sb = new StringBuilder();
         if (br.hasErrors()){
             for (FieldError fieldError : br.getFieldErrors()) {
@@ -45,7 +48,7 @@ public class RatingController {
             }
             return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
         } else {
-            RatingDto newRatingDto = ratingService.createRating(ratingDto, djName);
+            RatingDto newRatingDto = ratingService.createRating(ratingDto, djName, bookingId);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{djName}")
                     .buildAndExpand(newRatingDto.getRating()).toUri();
             return ResponseEntity.created(location).build();
