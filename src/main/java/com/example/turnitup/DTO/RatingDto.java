@@ -1,11 +1,12 @@
 package com.example.turnitup.DTO;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -15,6 +16,9 @@ import java.time.LocalDate;
 public class RatingDto {
 
     private LocalDate dateRated;
+
+    @Min(1)
+    @Max(10)
     private int rating;
 
 

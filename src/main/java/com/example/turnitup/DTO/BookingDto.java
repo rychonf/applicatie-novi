@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -12,9 +13,13 @@ import java.time.LocalDate;
 @Setter
 @Getter
 public class BookingDto {
+
+    @NotNull
     private LocalDate bookingDate;
 
+    @NotNull
     private double hoursBooked;
+
     private double totalPrice;
 
 }
