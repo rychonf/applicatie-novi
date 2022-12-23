@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.time.LocalDate;
 
 @Entity
@@ -23,11 +25,16 @@ public class Rating {
     private Long id;
 
     private LocalDate dateRated;
+
+    @Min(1)
+    @Max(10)
     private int rating;
 
     @ManyToOne
-    @JoinColumn(name = "dj_rated")
+    @JoinColumn(name = "dj_rated", referencedColumnName = "djName")
     private DJ dj;
+
+
 
 
 }

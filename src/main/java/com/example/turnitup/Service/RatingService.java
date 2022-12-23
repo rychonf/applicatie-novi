@@ -59,17 +59,25 @@ public class RatingService {
 
             if (djRepository.findByDjName(dj).isPresent()) {
                 rating.setDj(djRepository.findByDjName(dj).get());
+
                 LocalDate bookingDate = bookingRepository.findById(bookingId).get().getBookingDate();
                 LocalDate dateToday = LocalDate.now();
 
-                if (dateToday.isAfter(bookingDate)) {
+                int ratingForDj = rating.getRating();
 
-                    Rating newRating = ratingRepository.save(rating);
-                    RatingDto dto = fromRating(newRating);
+                if (ratingForDj >= 1 && ratingForDj <= 10) {
 
-                    return dto;
-                } else throw new RatingToEarlyException("The booking has not taken place yet, " +
-                        "So its impossible to rate the dj his performance ");
+
+                    if (dateToday.isAfter(bookingDate)) {
+
+                        Rating newRating = ratingRepository.save(rating);
+                        RatingDto dto = fromRating(newRating);
+
+                        return dto;
+                    } else throw new RatingToEarlyException("The booking has not taken place yet, " +
+                            "So its impossible to rate the dj his performance ");
+
+                } else throw new RatingNotFoundException("The rating must be between 1 and 10");
 
             } else throw new DJNotFoundException("The dj with this name doesn't exist");
 
