@@ -63,6 +63,8 @@ public class RatingService {
                 LocalDate bookingDate = bookingRepository.findById(bookingId).get().getBookingDate();
                 LocalDate dateToday = LocalDate.now();
 
+                LocalDate dateRated = LocalDate.now();
+
                 int ratingForDj = rating.getRating();
 
                 if (ratingForDj >= 1 && ratingForDj <= 10) {
@@ -70,6 +72,7 @@ public class RatingService {
 
                     if (dateToday.isAfter(bookingDate)) {
 
+                        rating.setDateRated(dateRated);
                         Rating newRating = ratingRepository.save(rating);
                         RatingDto dto = fromRating(newRating);
 
