@@ -25,7 +25,7 @@ public class UploadMixtapeToDatabaseController {
         this.databaseService = databaseService;
     }
 
-    @PostMapping(value = "/uploadToDB")
+    @PostMapping(value = "")
     public UploadResponse mixtapeUpload(@RequestParam("mixtape")MultipartFile mixtapeFile, @RequestParam("djId") Long id) throws IOException{
         Mixtape mixtape = databaseService.uploadFileDocument(mixtapeFile, id);
         String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadMixtapeFromDB/")
@@ -42,13 +42,13 @@ public class UploadMixtapeToDatabaseController {
         return databaseService.singleFileDownload(mixtapeName, request);
     }
 
-    @GetMapping(value = "/downloadAsZip")
+    @GetMapping(value = "/downloadAsZip/{mixtapeName}")
     public void downloadAsZip(@RequestParam("mixtapeName") String[] files, HttpServletResponse response) throws IOException{
 
         databaseService.getZipDownload(files, response);
     }
 
-    @GetMapping(value = "/getAll")
+    @GetMapping(value = "/list")
     public Collection<Mixtape> getAllMixtapesFromDB() {
         return databaseService.getAllFromDB();
     }

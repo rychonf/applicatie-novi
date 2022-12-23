@@ -2,10 +2,8 @@ package com.example.turnitup.Service;
 
 import com.example.turnitup.DTO.DJDto;
 import com.example.turnitup.Exception.DJNotFoundException;
-import com.example.turnitup.Exception.RecordNotFoundException;
 import com.example.turnitup.Model.DJ;
 import com.example.turnitup.Repository.DJRepository;
-import com.example.turnitup.Repository.RatingRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,11 +15,10 @@ public class DJService {
 
     private final DJRepository djRepository;
 
-    private final RatingRepository ratingRepository;
 
-    public DJService(DJRepository djRepository, RatingRepository ratingRepository) {
+    public DJService(DJRepository djRepository) {
         this.djRepository = djRepository;
-        this.ratingRepository = ratingRepository;
+
     }
 
     public List<DJDto> getAllDJs(){
@@ -41,7 +38,7 @@ public class DJService {
             return dto;
         } else {
 
-            throw new RecordNotFoundException("Dj does not exist, try another id");
+            throw new DJNotFoundException("Dj does not exist, try another id");
         }
     }
 

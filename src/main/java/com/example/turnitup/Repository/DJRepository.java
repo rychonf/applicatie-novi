@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface DJRepository extends JpaRepository<DJ, Long> {
     Optional<DJ> findByDjName(String djName);
+
 }
