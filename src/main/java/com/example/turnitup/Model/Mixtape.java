@@ -7,7 +7,6 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -31,8 +30,5 @@ public class Mixtape {
 
     @OneToOne(mappedBy = "mixtape")
     private DJ dj;
-
-    @OneToMany
-    private List<MixtapeReaction> mixtapeReactions;
 
 }
