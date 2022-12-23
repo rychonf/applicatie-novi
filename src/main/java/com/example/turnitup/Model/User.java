@@ -1,14 +1,11 @@
 package com.example.turnitup.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.mapping.List;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,7 +31,6 @@ public class User {
     private char typeOfSubscription;
 
     @Column
-    @Email
     private String email;
 
     @OneToMany(
