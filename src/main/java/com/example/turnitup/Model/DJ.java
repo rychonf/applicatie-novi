@@ -18,7 +18,7 @@ import java.util.List;
 
 @Table(name = "DJ")
 @DynamicUpdate
-public class DJ {
+public class DJ  {
 
     @Id
     @GeneratedValue
@@ -38,7 +38,7 @@ public class DJ {
     private List<Rating> rating;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "mixtape_id", referencedColumnName = "id")
+    @JoinColumn(name = "mixtape_id", referencedColumnName = "fileName")
     private Mixtape mixtape;
 
     @OneToMany
